@@ -1,0 +1,20 @@
+#+TITLE: Iterator - Extended iterator library
+
+* Status
+
+  Unstable an unsuitable for use
+
+* Overview
+
+* Dependencies
+  Type Utility
+
+* Slice iterator
+* Iterable and Generic_iterator
+  
+* Work 
+** TODO Slice Iterator
+** TODO Generalized Slice Iterator
+** TODO Stream
+** TODO Trampoline
+** TODO Lazy Iterators

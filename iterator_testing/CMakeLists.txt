@@ -7,4 +7,5 @@ endmacro( iterator_add_simple_test  name )
 
 iterator_add_simple_test( autoref )
 iterator_add_simple_test( range )
+iterator_add_simple_test( iterable )
 

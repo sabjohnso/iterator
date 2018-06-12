@@ -8,6 +8,14 @@
 #include <iterator>
 #include <type_traits>
 
+
+//
+// ... Type Utility header files
+//
+#include <type_utility/type_utility.hpp>
+
+
+
 namespace Iterator
 {
   namespace Core
@@ -18,6 +26,9 @@ namespace Iterator
     using std::forward;
 
     using std::make_signed;
+
+
+    using TypeUtility::CRTP;
     
   } // end of namespace Core
 } // end of namespace Iterator
