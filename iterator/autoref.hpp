@@ -105,6 +105,13 @@ namespace Iterator
       
     }; // end of class Auto_ref
 
+
+    template< typename T >
+    constexpr auto
+    autoref( T&& x ){
+      return Auto_ref<decay_t<T>>( x );
+    }
+
     
   } // end of namespace Core  
 } // end of namespace Iterator
