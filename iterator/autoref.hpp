@@ -107,10 +107,11 @@ namespace Iterator
 
 
     template< typename T >
-    constexpr auto
-    autoref( T&& x ){
-      return Auto_ref<decay_t<T>>( x );
-    }
+    constexpr Auto_ref<T>
+    autoref( T x ){ return {x}; }
+
+
+    
 
     
   } // end of namespace Core  

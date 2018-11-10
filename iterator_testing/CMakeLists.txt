@@ -1,5 +1,6 @@
 macro( iterator_add_simple_test  name )
   add_executable( ${name}_test ${name}_test.cpp )
+  target_link_libraries( ${name}_test PRIVATE iterator )
   add_test( ${name} ${name}_test ) 
 endmacro( iterator_add_simple_test  name )
 

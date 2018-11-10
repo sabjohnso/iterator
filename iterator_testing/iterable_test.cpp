@@ -16,6 +16,7 @@
 // ... Iterator header files
 //
 #include <iterator/iterable.hpp>
+#include <iterator/generic.hpp>
 
 //
 // ... Testing header files
@@ -29,7 +30,7 @@ using std::decay_t;
 template< typename F, typename T >
 struct Iterate
   : pair<F,T>
-  , public Iterable<Iterate<F,T>>
+  , public Generic_iterable<Iterate<F,T>>
 {
 public:
   using value_type = T;

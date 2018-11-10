@@ -5,23 +5,74 @@
 cmake_minimum_required( VERSION 3.7 )
 
 project( ITERATOR )
+
+#
+# ... Version information
+#
 set( ITERATOR_MAJOR 0)
 set( ITERATOR_MINOR 1)
 set( ITERATOR_UPDATE 0)
-set( ITERATOR_VERSION iterator-${ITERATOR_MAJOR}.${ITERATOR_MINOR} )
+
+set( ITERATOR_SUFFIX ${ITERATOR_MAJOR}.${ITERATOR_MINOR} )
+
+set( ITERATOR_VERSION iterator-${ITERATOR_SUFFIX} )
 set( ITERATOR_VERSION_UPDATE ${ITERATOR_VERSION}.${ITERATOR_UPDATE} )
 
-option( BUILD_ITERATOR_TESTING  "Build the iterator  tests" ON )
+
+#
+# ... Build options
+# 
+option( BUILD_ITERATOR_TESTING  "Build the iterator tests" ON )
 option( BUILD_ITERATOR_DOCUMENTATION "Build the iterator documentation" ON )
+option( ITERATOR_INSTALL_VERSIONED "Make a version specific installation" ON )
 
-include_directories( 
-  ${ITERATOR_SOURCE_DIR}
-  ${ITERATOR_BINARY_DIR} )
+#
+# ... Dependencies
+#
+find_package( type_utility REQUIRED )
+find_package( operators REQUIRED )
 
-if( NOT ITERATOR_INSTALL_INCLUDE_DIR)
-  set( ITERATOR_INSTALL_INCLUDE_DIR include/iterator
-    CACHE PATH "Path for installation of header files" )
-endif( NOT ITERATOR_INSTALL_INCLUDE_DIR)
+
+#
+# ... Installation path info
+#
+set( ITERATOR_INSTALL_INCLUDE_DIR include
+  CACHE PATH "Path for installation of header files" )
+
+set( ITERATOR_INSTALL_LIBRARY_DIR lib/iterator
+  CACHE PATH "Path for installation of header files" )
+
+
+if( ITERATOR_INSTALL_VERSIONED )
+  string( APPEND ITERATOR_INSTALL_INCLUDE_DIR /iterator${ITERATOR_SUFFIX})
+  string( APPEND ITERATOR_INSTALL_LIBRARY_DIR ${ITERATOR_SUFFIX})
+endif()
+
+#
+# ... Header library target
+#
+add_library( iterator INTERFACE )
+target_link_libraries( iterator INTERFACE type_utility operators )
+
+
+target_include_directories( iterator
+  INTERFACE $<INSTALL_INTERFACE:${ITERATOR_INSTALL_INCLUDE_DIR}> )
+
+target_include_directories( iterator
+  INTERFACE $<BUILD_INTERFACE:${ITERATOR_SOURCE_DIR}>)
+
+target_include_directories( iterator
+  INTERFACE $<BUILD_INTERFACE:${ITERATOR_BINARY_DIR}> )
+
+
+install( TARGETS iterator EXPORT iterator
+  DESTINATION ${ITERATOR_INSTALL_LIBRARY_DIR})
+
+install( EXPORT iterator
+  DESTINATION ${ITERATOR_INSTALL_LIBRARY_DIR}
+  FILE iterator.cmake )
+  
+
 
 add_subdirectory( iterator )
 
@@ -43,15 +94,12 @@ if( BUILD_ITERATOR_DOCUMENTATION )
 
   configure_file( Doxyfile.in Doxyfile )
 
-  if( NOT ITERATOR_INSTALL_DOC_DIR)
-    set( ITERATOR_INSTALL_DOC_DIR share/doc/${ITERATOR_VERSION}
-      CACHE PATH "Path for installation of documentation files" )
-  endif( NOT ITERATOR_INSTALL_DOC_DIR)
+  set( ITERATOR_INSTALL_DOC_DIR share/doc/${ITERATOR_VERSION}
+    CACHE PATH "Path for installation of documentation files" )
 
-  if( NOT ITERATOR_INTALL_MAN_DIR)
-    set( ITERATOR_INTALL_MAN_DIR include/iterator
-      CACHE PATH "Path for installation of man files" )
-  endif( NOT ITERATOR_INTALL_MAN_DIR)
+  set( ITERATOR_INTALL_MAN_DIR include/iterator
+    CACHE PATH "Path for installation of man files" )
+
 
   find_package( Doxygen REQUIRED )
 
