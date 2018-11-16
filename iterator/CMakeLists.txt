@@ -2,6 +2,7 @@ configure_file( config.hpp.in config.hpp )
 
 install( FILES
   ${CMAKE_CURRENT_BINARY_DIR}/config.hpp
+  algorithm.hpp
   autoref.hpp
   gslice.hpp
   import.hpp

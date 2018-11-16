@@ -2,12 +2,25 @@
 
 * Status
 
-  Unstable an unsuitable for use
+  Unstable and unsuitable for use
 
 * Overview
 
+* Version Policy
+
+** Prior to version 1.0
+   The library should be considered unstable and subject to drastic
+   incompatible changes in the API between minor version
+   changes. Generally, the library is not suitable for consumption.
+
+** Version 1.0 and later
+   The library is stable. Changes in the minor version indicated
+   additions to the API. Changes in the patch version indicate changes
+   that do not impact the API. Changes to the major version indicate
+   incompatible changes to the API.
+
 * Dependencies
-  Type Utility
+** Type Utility
 
 * Slice iterator
 * Iterable and Generic_iterator

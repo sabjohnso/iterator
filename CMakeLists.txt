@@ -4,20 +4,21 @@
 
 cmake_minimum_required( VERSION 3.7 )
 
-project( ITERATOR )
+project( ITERATOR VERSION 0.2.0 LANGUAGES CXX )
 
 #
 # ... Version information
 #
-set( ITERATOR_MAJOR 0)
-set( ITERATOR_MINOR 1)
-set( ITERATOR_UPDATE 0)
+set( ITERATOR_MAJOR ${PROJECT_VERSION_MAJOR})
+set( ITERATOR_MINOR ${PROJECT_VERSION_MINOR})
+set( ITERATOR_UPDATE ${PROJECT_VERSION_PATCH})
 
 set( ITERATOR_SUFFIX ${ITERATOR_MAJOR}.${ITERATOR_MINOR} )
 
 set( ITERATOR_VERSION iterator-${ITERATOR_SUFFIX} )
 set( ITERATOR_VERSION_UPDATE ${ITERATOR_VERSION}.${ITERATOR_UPDATE} )
 
+list( APPEND CMAKE_MODULE_PATH ${ITERATOR_SOURCE_DIR}/cmake )
 
 #
 # ... Build options
@@ -82,6 +83,7 @@ add_subdirectory( iterator )
 # ... Testing #
 if( BUILD_ITERATOR_TESTING )
   enable_testing()
+  include( TestExecutable )
   add_subdirectory( iterator_testing )
 endif( BUILD_ITERATOR_TESTING )
 
