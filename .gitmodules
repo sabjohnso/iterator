@@ -1,3 +1,6 @@
 [submodule "cmake"]
 	path = cmake
 	url = https://github.com/sabjohnso/cmake_modules
+[submodule "iterator_testing/gtest_external"]
+	path = iterator_testing/gtest_external
+	url = https://github.com/sabjohnso/gtest_external
