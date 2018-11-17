@@ -8,6 +8,7 @@
 #include <iterator/autoref.hpp>
 #include <iterator/range.hpp>
 #include <iterator/iterable.hpp>
+#include <iterator/indexed.hpp>
 #include <iterator/algorithm.hpp>
 
 

@@ -4,12 +4,12 @@ install( FILES
   ${CMAKE_CURRENT_BINARY_DIR}/config.hpp
   algorithm.hpp
   autoref.hpp
+  generic.hpp
   gslice.hpp
   import.hpp
-  iterator.hpp
-  iterable.hpp
-  generic.hpp
   indexed.hpp
+  iterable.hpp
+  iterator.hpp
   range.hpp
   slice.hpp
   DESTINATION ${ITERATOR_INSTALL_INCLUDE_DIR}/iterator )

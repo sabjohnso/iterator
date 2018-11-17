@@ -19,3 +19,9 @@ add_test_executable(
   EXENAME algorithm_test
   SOURCE_FILES for_each_iter.cpp
   DEPENDENCIES iterator google::test_main )
+
+add_test_executable(
+  NAME indexed
+  EXENAME indexed_test
+  SOURCE_FILES indexed.cpp
+  DEPENDENCIES iterator google::test_main )

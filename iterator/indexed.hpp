@@ -1,6 +1,11 @@
 #ifndef INDEXED_HPP_INCLUDED_235808412974576736
 #define INDEXED_HPP_INCLUDED_235808412974576736 1
 
+//
+// ... Iterator header files
+//
+#include <iterator/import.hpp>
+#include <iterator/iterable.hpp>
 
 namespace Iterator::Core
 {
@@ -19,41 +24,42 @@ namespace Iterator::Core
    */
   template<
     typename Container,
-    Access constness = Access::WRITABLE,
+    Access Constness = Access::WRITABLE,
     Direction direction = Direction::FORWARD
     >
   class Indexed_iterator : public Comparable<Indexed_iterator<Container,Constness,direction>>
   {
   public:
 
-    static constexpr bool constness = Constness;
+    static constexpr Access  constness = Constness;
     
     using container_type = Container;
     using container_reference =
-      conditional_t<constness = Access::READONLY, 
+      conditional_t<constness == Access::READONLY, 
 		    add_lvalue_reference_t<add_const_t<container_type>>,
 		    add_lvalue_reference_t<container_type>>;
 
     using value_type = typename Container::value_type;
     using reference =
-      conditional_t<constness,
+      conditional_t<constness == Access::READONLY,
 		    add_lvalue_reference_t<add_const_t<value_type>>,
 		    add_lvalue_reference_t<value_type>>;
     
     using size_type  = typename Container::size_type;
     using ssize_type = make_signed_t<size_type>;
-    using shape_type = typename Container::shape_type;
+
       
     static constexpr size_type rank = container_type::rank;
     
     friend container_type;
 
     static_assert(
-      (constness && is_const<remove_reference_t<container_reference>>::value) ||
-      ((!constness) && !(is_const<remove_reference_t<container_reference>>::value)),
+      (constness == Access::READONLY && is_const<remove_reference_t<container_reference>>::value) ||
+      ((!(constness == Access::READONLY)) && !(is_const<remove_reference_t<container_reference>>::value)),
       "Expected agreement about constness" );
 
-    Indexed_iterator() = delete;
+    Indexed_iterator() = default;
+
 
     /** Construct an iterator from a container reference an an initial index 
      */
@@ -145,9 +151,14 @@ namespace Iterator::Core
     reference
     operator*() &  { return ref_[ index_element_ ]; }
 
-  protected:
-      
-    ~Indexed_iterator(){}
+    ssize_type
+    distance( Indexed_iterator it )
+    {
+      return it.index_element_ - index_element_;
+    }
+
+
+
     
   private:
 
@@ -159,21 +170,36 @@ namespace Iterator::Core
 
   }; // end of class Iterator;
 
-
+  /** */
   template< typename T >
   class Indexed_iterable
     : public CRTP<Indexed_iterable, T>
     , public Iterable<T>
   {
   public:
-    using iterator = Indexed_iterator<T,false,Direction::FORWARD>;
-    using const_iterator = Indexed_iterator<T,true,Direction::FORWARD>;
-    using reverse_iterator = Indexed_iterator<T,false,Direction::REVERSE>;
-    using reverse_const_iterator = Indexed_iterator<T,true,Direction::REVERSE>;
+    using iterator = Indexed_iterator<T,Access::WRITABLE,Direction::FORWARD>;
+    using const_iterator = Indexed_iterator<T,Access::READONLY,Direction::FORWARD>;
+    using reverse_iterator = Indexed_iterator<T,Access::WRITABLE,Direction::REVERSE>;
+    using reverse_const_iterator = Indexed_iterator<T,Access::READONLY,Direction::REVERSE>;
+  protected:
+    Indexed_iterable() = default;
+    ~Indexed_iterable() = default;
   };
 
 
 } // end of namespace Iterator::Core
+
+namespace std
+{
+  template< typename C, Iterator::Core::Access A, Iterator::Core::Direction D >
+  auto
+  distance( Iterator::Core::Indexed_iterator<C,A,D> first,
+	    Iterator::Core::Indexed_iterator<C,A,D> last )
+  {
+    return first.distance( last );
+  }
+  
+} // end of namespace std
 
 
 #endif // !defined INDEXED_HPP_INCLUDED_235808412974576736
